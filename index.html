@@ -3,42 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Musique - Tsiky</title>
+<title>Tsiky Music Studio</title>
 <link rel="manifest" href="manifest.json">
 <style>
-  body { font-family:'Segoe UI',Arial; background:linear-gradient(135deg,#1a1a2e,#16213e); color:#ecf0f1; margin:0; padding:10px; text-align:center; }
-  h1 { color:#f1c40f; }
-  .piste { display:flex; align-items:center; margin:5px 0; gap:5px; }
-  .piste span { width:80px; font-weight:bold; }
-  .cases { display:flex; flex-wrap:wrap; justify-content:center; }
-  .case { width:40px; height:40px; margin:2px; background:#2c3e50; border-radius:6px; cursor:pointer; transition:background .2s; }
+  body { font-family:'Segoe UI',Arial; background:#0d0d0d; color:#eee; margin:0; padding:0; }
+  .header { display:flex; justify-content:space-between; align-items:center; padding:16px; background:#111; }
+  .header h1 { color:#f1c40f; margin:0; font-size:24px; }
+  .section { background:#1a1a1a; border-radius:12px; margin:12px; padding:12px; }
+  .section h2 { color:#f1c40f; margin-top:0; font-size:18px; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .card { background:#222; padding:14px; border-radius:10px; text-align:center; font-size:14px; }
+  .card:hover { background:#333; }
+  .pistes { margin:10px 0; }
+  .piste { display:flex; align-items:center; gap:6px; margin:4px 0; }
+  .piste span { width:90px; }
+  .cases { display:flex; flex-wrap:wrap; gap:4px; }
+  .case { width:40px; height:40px; background:#2c3e50; border-radius:6px; cursor:pointer; }
   .case.active { background:#f1c40f; }
-  button { padding:12px 25px; font-size:16px; font-weight:bold; border:none; border-radius:10px; color:white; background:#27ae60; cursor:pointer; margin:5px; }
+  button { padding:10px 20px; border:none; border-radius:8px; color:white; background:#27ae60; cursor:pointer; font-weight:bold; margin:4px; }
   .rouge { background:#e74c3c; }
-  input[type=range] { width:200px; }
+  a.btn { background:#8e44ad; color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; display:inline-block; font-weight:bold; }
 </style>
 </head>
 <body>
-<h1>🎵 Studio Musique Tsiky</h1>
-<p>Cliquez sur les cases pour créer votre beat, puis appuyez sur Play !</p>
-
-<div id="pistes"></div>
-
-<div style="margin:15px 0;">
-  <label>Vitesse : <input type="range" id="vitesse" min="80" max="200" value="120"></label>
+<div class="header">
+  <h1>🎵 Tsiky Studio</h1>
+  <span style="background:#f39c12;padding:4px 10px;border-radius:20px;font-size:12px;color:#000;">Gratuit</span>
 </div>
 
-<button onclick="jouer()">▶️ Play</button>
-<button class="rouge" onclick="stop()">⏹ Stop</button>
-<button onclick="clear()">🧹 Effacer</button>
-<button onclick="save()">💾 Sauvegarder</button>
-<br><br>
-<a href="Tsiky%20Music.apk" download style="display:inline-block;background:#8e44ad;color:white;padding:14px 30px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:18px;">⬇️ Télécharger l'application Tsiky Music</a>
-<p style="color:#888;font-size:12px;margin-top:5px;">Fichier APK pour Android</p>
+<div class="section">
+  <h2>Type de piste</h2>
+  <div class="grid">
+    <div class="card">🎵 Importer le fichier</div>
+    <div class="card">🎤 Voix/Audio</div>
+    <div class="card">🥁 Boîte à rythmes</div>
+    <div class="card">🎹 Synthétiseur</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Outils</h2>
+  <div class="grid">
+    <div class="card">🎚️ Mastering</div>
+    <div class="card">🎧 Splitter</div>
+    <div class="card">🎛️ AudioStretch</div>
+    <div class="card">🥁 Tuner</div>
+    <div class="card">⏱️ Métronome</div>
+    <div class="card">🎚️ Palette</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🥁 Boîte à rythmes</h2>
+  <div id="pistes"></div>
+  <div style="text-align:center;margin:12px 0;">
+    <label>Vitesse : <input type="range" id="vitesse" min="80" max="200" value="120"></label>
+  </div>
+  <div style="text-align:center;">
+    <button onclick="jouer()">▶️ Play</button>
+    <button class="rouge" onclick="stop()">⏹ Stop</button>
+    <button onclick="clear()">🧹 Effacer</button>
+    <button onclick="save()">💾 Sauvegarder</button>
+  </div>
+</div>
+
+<div style="text-align:center;padding:20px;">
+  <a class="btn" href="Tsiky%20Music.apk" download>⬇️ Télécharger l'application Tsiky Music</a>
+</div>
+
 <script>
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 let instruments = ['🥁 Caisse','🥁 Pierre','🎩 Moins','🎹 Note 1','🎹 Note 2','🎹 Note 3','🔊 Test'];
-let coups = []; // bool per instrument per step (max 8 steps)
+let coups = [];
 let N = 8;
 for (let i=0;i<instruments.length;i++) coups[i]=[];
 function generer() {
@@ -56,7 +92,6 @@ function generer() {
   });
 }
 generer();
-
 let ctx, interval, step=0;
 function jouer() {
   ctx = ctx || new (window.AudioContext||window.webkitAudioContext)();
@@ -64,7 +99,7 @@ function jouer() {
   interval = setInterval(() => {
     coups.forEach((inst,i) => { if (inst[step]) jouerSon(i); });
     step = (step+1) % N;
-  }, 60000/parseInt(document.getElementById('vitesse').value)/4*1000/60*2); // adjust
+  }, 60000/parseInt(document.getElementById('vitesse').value)/4*1000/60*2);
 }
 function jouerSon(i) {
   if (!ctx) return;
@@ -78,7 +113,6 @@ function jouerSon(i) {
 function stop() { if (interval) clearInterval(interval); step=0; }
 function clear() { for (let i=0;i<instruments.length;i++) for (let s=0;s<N;s++) coups[i][s]=false; generer(); }
 function save() { localStorage.setItem('beat', JSON.stringify(coups)); alert('Sauvegardé !'); }
-// Load saved
 let s = localStorage.getItem('beat'); if (s) { try { coups = JSON.parse(s); generer(); } catch(e){} }
 </script>
 </body>
